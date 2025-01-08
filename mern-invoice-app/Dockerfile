@@ -2,13 +2,13 @@
 FROM node:latest AS build
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json from the build context (the Jenkins workspace)
-COPY package*.json ./  # Since the build context is already 'mern-invoice-app', this will work
+# Copy package.json and package-lock.json from the correct path
+COPY ./mern-invoice-app/package*.json ./
 
 RUN npm install
 
 # Copy the rest of the application files
-COPY . .
+COPY ./mern-invoice-app/ .
 
 RUN npm run build
 
