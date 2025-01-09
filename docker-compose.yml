@@ -1,31 +1,40 @@
-version: "3"
-services:
-  backend:
-    image: node:latest
-    working_dir: /usr/src/app
-    volumes:
-      - .:/usr/src/app
-    ports:
-      - "5000:5000"
-    command: npm start
-    depends_on:
-      - mongodb
+version: "3.7"
 
+services:
   frontend:
-    image: node:latest
-    working_dir: /usr/src/app
-    volumes:
-      - ./client:/usr/src/app
+    build:
+      context: .
+      dockerfile: client/Dockerfile
     ports:
       - "3000:3000"
-    command: npm start
+    networks:
+      - app-network
 
-  mongodb:
-    image: mongo:latest
+  backend:
+    build:
+      context: .
+      dockerfile: mern-invoice-app/Dockerfile
+    environment:
+      - MONGO_URI=mongodb://exam-center_mongo_1:27017/exam_center
     ports:
-      - "27017:27017"
+      - "5000:5000"
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
     volumes:
       - mongo_data:/data/db
+    ports:
+      - "27017:27017"  # Bind MongoDB to the host machine's port 27017
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   mongo_data:
