@@ -1,6 +1,6 @@
 FROM  node:latest
 WORKDIR /usr/src/app
-COPY  Client/package*.json ./
+COPY  client/package*.json ./
 RUN npm install 
 COPY client/ . 
 RUN npm run build
