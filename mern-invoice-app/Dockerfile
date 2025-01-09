@@ -3,12 +3,12 @@ FROM node:latest AS build
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json from the correct path
-COPY ./mern-invoice-app/package*.json ./
+COPY mern-invoice-app/package*.json ./
 
 RUN npm install
 
 # Copy the rest of the application files
-COPY ./mern-invoice-app/ .
+COPY mern-invoice-app/ .
 
 RUN npm run build
 
